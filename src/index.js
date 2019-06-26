@@ -22,7 +22,7 @@ class List {
     renderList() {
         let list = this.list.map(item => {
             return this.renderItem(item)
-        })
+        });
         return list;
     }
 
@@ -38,8 +38,8 @@ class List {
                         <ul class="item__list">
                             <li>id: ${item.id} </li>
                         </ul>
-                        <button class="btn-primary" onclick="${this.addFavorite(item.id)}">Избранное</button>
-                        <button class="btn-primary" onclick="${this.removeFavorite(item.id)}">Убрать</button>
+                        <button class="btn-primary" onclick="${() => this.addFavorite(item.id)}">Избранное</button>
+                        <button class="btn-primary" onclick="${() => this.removeFavorite(item.id)}">Убрать</button>
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@ class List {
     }
 }
 
-function component() {
+(function component() {
     const container = document.createElement('div');
     const row = document.createElement('div');
     let catList = new List(cats);
@@ -56,7 +56,5 @@ function component() {
     row.className = 'row';
     row.innerHTML = catList.renderList();
     console.log(row);
-    return container;
-}
-
-document.body.appendChild(component());
+    document.body.appendChild(container);
+})();
