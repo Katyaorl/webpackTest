@@ -1,16 +1,20 @@
-@import "~bootstrap/scss/bootstrap";
-body{
+@import '~bootstrap/scss/bootstrap';
+
+body {
   font-size: 22px;
   color: blue;
 }
-.item{
-  &__top{
+
+.item {
+  &__top {
     overflow: hidden;
-    picture{
+
+    picture {
       display: block;
       max-width: 100%;
     }
-    img{
+
+    img {
       object-fit: cover;
     }
   }

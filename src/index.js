@@ -1,60 +1,68 @@
 import './scss/style.scss';
-import _ from 'lodash';
 
 const cats = require('./api/cats.json');
 
 class List {
-    constructor(data) {
-        this.favorites = new Set()
-        this.list = data
-    }
+  constructor(data) {
+    this.favorites = new Set();
+    this.list = data;
+  }
 
-    addFavorite(id) {
-        if (!this.favorites.has(id))
-            this.favorites.add(id)
+  addFavorite(id) {
+    if (!this.favorites.has(id)) {
+      this.favorites.add(id);
     }
+    console.log(this.favorites);
+  }
 
-    removeFavorite(id) {
-        if (this.favorites.has(id))
-            this.favorites.delete(id)
+  removeFavorite(id) {
+    if (this.favorites.has(id)) {
+      this.favorites.delete(id);
     }
+    console.log(this.favorites);
+  }
 
-    renderList() {
-        let list = this.list.map(item => {
-            return this.renderItem(item)
-        });
-        return list;
-    }
+  renderList() {
+    const row = document.createElement('div');
+    row.classList.add('row');
+    this.list.forEach(item => {
+      row.appendChild(this.renderItem(item));
+    });
+    return row;
+  }
 
-    renderItem(item) {
-        return `<div class="col-md-4">
-                <div class="item">
-                    <div class="item__top">
-                        <picture>
-                            <img src="${item.url}" alt="${item.id}">
-                        </picture>
-                    </div>
-                    <div class="item__bottom">
-                        <ul class="item__list">
-                            <li>id: ${item.id} </li>
-                        </ul>
-                        <button class="btn-primary" onclick="${() => this.addFavorite(item.id)}">Избранное</button>
-                        <button class="btn-primary" onclick="${() => this.removeFavorite(item.id)}">Убрать</button>
-                    </div>
-                </div>
+  renderItem(item) {
+    const div = document.createElement('div');
+    div.classList.add('col-md-4');
+    div.innerHTML = `
+        <div class="item">
+            <div class="item__top">
+                <picture>
+                    <img src="${item.url}" alt="${item.id}">
+                </picture>
             </div>
-`
-    }
+            <div class="item__bottom">
+                <ul class="item__list">
+                    <li>id: ${item.id} </li>
+                </ul>
+                <button class="btn-primary js-fav">Избранное</button>
+                <button class="btn-primary js-del">Убрать</button>
+            </div>
+        </div>`;
+    div
+      .querySelector('.js-fav')
+      .addEventListener('click', () => this.addFavorite(item.id));
+    div
+      .querySelector('.js-del')
+      .addEventListener('click', () => this.removeFavorite(item.id));
+    return div;
+  }
 }
 
 (function component() {
-    const container = document.createElement('div');
-    const row = document.createElement('div');
-    let catList = new List(cats);
-    container.className = 'container';
-    container.appendChild(row);
-    row.className = 'row';
-    row.innerHTML = catList.renderList();
-    console.log(row);
-    document.body.appendChild(container);
+  const container = document.createElement('div');
+  container.className = 'container';
+  let catList = new List(cats);
+  container.appendChild(catList.renderList());
+  document.body.appendChild(container);
 })();
